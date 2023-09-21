@@ -18,7 +18,6 @@ app.use(ejsLayout); // This is for setting up layout in the views
 app.set("view engine", "ejs");
 app.set("views","./views" )
 
-
 // Setting up the express session for the passport authentication
 app.use(session({
     name:"auth_key",

@@ -2,6 +2,7 @@
 <h1>Welcome to the authentication system!</h1>
 <ul>
     <%if(locals.user){%>
+        Hi <%=user.name%>
     <li>
         <a href="users/sign-out">Sign-out</a>
     </li>
