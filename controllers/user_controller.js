@@ -40,5 +40,5 @@ module.exports.create = async (req,res)=>{
 
 module.exports.createSession =(req,res)=>{
     console.log(req.body)
-    return res.redirect("back");
+    return res.redirect("/");
 }
