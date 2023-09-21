@@ -16,7 +16,7 @@ passport.use(new LocalStrategy({
             return done(null, user)
         })
         .catch((err)=>{
-            req.flash("Error",err)
+            // req.flash("Error",err)
             console.log("Error in finding user--->passport",err)
             return done(err)
         })

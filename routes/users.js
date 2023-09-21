@@ -11,6 +11,8 @@ router.post("/create",userController.create);
 //use passport to authenticate
 router.post("/create-session",passport.authenticate("local",{failureRedirect:"/users/sign-in"}),userController.createSession);
 
+router.get("/sign-out", userController.destroySession) // sign-out router
+
 // Google oauth2 authentication
 router.get("/auth/google", passport.authenticate("google",{scope:["profile","email"]}));
 router.get("/auth/google/callback", passport.authenticate("google",{failureRedirect:"/users/sign-in"}), userController.createSession);

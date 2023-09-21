@@ -42,3 +42,14 @@ module.exports.createSession =(req,res)=>{
     console.log(req.body)
     return res.redirect("/");
 }
+
+module.exports.destroySession  =(req,res)=>{
+    req.logout((err)=>{
+        if(err){
+            console.log("Error in logging out", err);
+            return;
+        }
+        console.log("Logged out");
+        return res.redirect("/");
+    })
+}
