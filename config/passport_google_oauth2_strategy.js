@@ -1,8 +1,7 @@
 const passport = require("passport");
 const googleStrategy = require("passport-google-oauth").OAuth2Strategy;
 const crypto = require("crypto");
-const User = require("../model/user");
-const env = require("../config/environment")
+const User = require("../models/user");
 
 passport.use(new googleStrategy({
     clientID: "109833799268-6m8ncr2152bdpec9dbt7h7on6ibje8rq.apps.googleusercontent.com",
@@ -12,7 +11,6 @@ passport.use(new googleStrategy({
     async (accessToken, refreshToken, profile, done)=>{
         try{
             const user = await User.findOne({email:profile.emails[0].value});
-            console.log("------>>>profile ", profile);
 
             if(user){
                 // if found,then set the user as req.user 
