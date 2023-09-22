@@ -1,5 +1,6 @@
 const User = require("../models/user");
 const bcrypt = require("bcryptjs");
+const signUpGreetMailer = require("../mailer/sign_up_mailer");
 
 module.exports.signUp = (req, res)=>{
     return res.render("sign-up",{
@@ -16,6 +17,7 @@ module.exports.signIn = (Req,res)=>{
 module.exports.create = async (req,res)=>{
     try{
         if(req.body.password!=req.body.confirm_password){
+            req.flash("error","Your password and confirm password doesn't match!")
             console.log("Password doesn't match!")
             return res.redirect("back");
         }
@@ -30,6 +32,11 @@ module.exports.create = async (req,res)=>{
                 email: req.body.email,
                 password:secPass
             })
+
+            // sending an email after successful sign up to his registered email id.
+            let htmlMsg = `Hi ${req.body.name}. Congratulations as you have successfully created your accunt with us!`
+            signUpGreetMailer.signUpGreeting(htmlMsg, req.body.email)
+            req.flash("success","Signed up successfully, Please check your email")
             console.log("User created successfully");
             res.redirect("/users/sign-in")
         }else{
@@ -43,6 +50,7 @@ module.exports.create = async (req,res)=>{
 }
 
 module.exports.createSession =async(req,res)=>{
+    req.flash("success","Signed in Successfully")
     return res.redirect("/");
 }
 
@@ -52,7 +60,8 @@ module.exports.destroySession  =(req,res)=>{
             console.log("Error in logging out", err);
             return;
         }
-        console.log("Logged out");
+        req.flash("success","Signed out!")
+        // console.log("Logged out");
         return res.redirect("/");
     })
 }

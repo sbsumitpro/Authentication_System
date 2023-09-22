@@ -1,20 +1,36 @@
 
-<h1>Welcome to the authentication system!</h1>
-<ul>
-    <%if(locals.user){%>
-        Hi <%=user.name%>
-    <li>
-        <a href="users/sign-out">Sign-out</a>
-    </li>
-    <li>
-        <a href="/users/email-form">Reset password?</a>
-    </li>
-    <%}else{%>
-    <li>
-        <a href="users/sign-up">Sign Up</a>
-    </li>
-    <li>
-        <a href="users/sign-in">Sign In</a> 
-    </li>
-    <%}%>
-</ul>
+<section class="vh-100">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-sm-6 text-black">
+  
+          <div class="px-5 ms-xl-4 mb-10">
+            <i class="fas fa-crow fa-2x me-3 pt-5 mt-xl-4" style="color: #709085;"></i>
+            <span class="h1 fw-bold mb-4">Welcome to the Authentication system!</span>
+          </div>
+          <br>
+          <br>
+
+        <%if(locals.user){%>
+            <p class="h3 mb-10 pb-lg-5">Dear <%=user.name%>. You are successfully signed in.</p>
+            <p class="h5 mb-10 pb-lg-5"><a class="text-muted" href="users/sign-out">Sign Out</a></p>
+            <p class="h5 mb-5 "><a class="text-muted" href="users/sign-up">Reset Password</a></p>
+        <%}else{%>
+          <div class="d-flex flex-column  h-custom-2 px-5 ms-xl-4 mt-5 pt-5 pt-xl-0 mt-xl-n5">
+
+            <h2 class="small mb-5 pb-lg-2"> This is a demo website for creating Sign-in/Sign-out system using Nodejs </h2>
+
+            <p class="h2 mb-10 pb-lg-5"><a class="text-muted" href="users/sign-in">Sign In</a></p>
+            <p class="h2 mb-5 pb-lg-2"><a class="text-muted" href="users/sign-up">Sign Up</a></p>
+
+          </div>
+        <%}%>
+  
+        </div>
+        <div class="col-sm-6 px-0 d-none d-sm-block">
+          <img src="https://mdbootstrap.com/img/new/ecommerce/vertical/004.jpg"
+            alt="Login image" class="w-100 vh-100" style="object-fit: cover; object-position: left;">
+        </div>
+      </div>
+    </div>
+  </section>

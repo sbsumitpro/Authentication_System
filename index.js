@@ -1,18 +1,20 @@
 const express = require("express");
 const app = express();
+require('dotenv').config();
 const port = 7000
 const bodyParser = require("body-parser")
 const ejsLayout = require("express-ejs-layouts")
 const db = require("./config/mongoose")
-
 const session = require("express-session");
 const passport = require("passport");
 const passportLocal = require("./config/passport_local");
 const passportGoogle = require("./config/passport_google_oauth2_strategy");
+const flash = require("connect-flash")
+const custom_mware = require("./config/flash-middleware")
 
 app.use(bodyParser.urlencoded({extended:false}))
 
-app.use(ejsLayout); // This is for setting up layout in the views 
+app.use(ejsLayout); // This is for setting up layout in the views  
 
 // setting the view engine
 app.set("view engine", "ejs");
@@ -32,6 +34,9 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(passport.setAuthenticatedUser)   
+
+app.use(flash());
+app.use(custom_mware.setFlash)
 
 
 // use express router

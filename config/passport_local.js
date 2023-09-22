@@ -6,14 +6,17 @@ const bcrypt = require("bcryptjs");
 
 // Authentication using passport
 passport.use(new LocalStrategy({
-    usernameField: "email" 
-}, async function(email, password, done) {
+    usernameField: "email",
+    passReqToCallback:true
+}, async function(req,email, password, done) {
     try{
         let user = await User.findOne({email:email})
-        let isMatched = await bcrypt.compare(password, user.password)
-        console.log("----",isMatched)
+        if(user){
+            let isMatched = await bcrypt.compare(password, user.password)
+        }
+        // console.log("----",isMatched)
         if(!user || !isMatched){
-            // req.flash("success","Invalid Username/Password")
+            req.flash("error","Invalid Username/Password")
             console.log("Invalid Username/Password")
             return done(null, false)
         }
