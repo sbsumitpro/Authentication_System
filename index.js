@@ -16,6 +16,10 @@ app.use(bodyParser.urlencoded({extended:false}))
 
 app.use(ejsLayout); // This is for setting up layout in the views  
 
+// extract styles and scripts from the subpages into the layout
+app.set('layout extractStyles', true) 
+app.set('layout extractScripts', true)
+
 // setting the view engine
 app.set("view engine", "ejs");
 app.set("views","./views" )

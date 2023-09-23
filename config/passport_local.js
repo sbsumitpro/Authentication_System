@@ -13,13 +13,16 @@ passport.use(new LocalStrategy({
         let user = await User.findOne({email:email})
         if(user){
             let isMatched = await bcrypt.compare(password, user.password)
-        }
-        // console.log("----",isMatched)
-        if(!user || !isMatched){
+            if(!isMatched){
+                req.flash("error","Invalid Username/Password");
+                console.log("Invalid Username/Password", req.body["g-recaptcha-response"]);
+                return done(null, false)
+            }
+        }else{
             req.flash("error","Invalid Username/Password")
-            console.log("Invalid Username/Password")
             return done(null, false)
         }
+        
         return done(null, user)
     }catch(err){
         // req.flash("Error",err)

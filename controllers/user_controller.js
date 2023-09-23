@@ -1,6 +1,7 @@
 const User = require("../models/user");
 const bcrypt = require("bcryptjs");
 const signUpGreetMailer = require("../mailer/sign_up_mailer");
+const fetch = require("node-fetch");
 
 module.exports.signUp = (req, res)=>{
     return res.render("sign-up",{
@@ -50,8 +51,22 @@ module.exports.create = async (req,res)=>{
 }
 
 module.exports.createSession =async(req,res)=>{
-    req.flash("success","Signed in Successfully")
-    return res.redirect("/");
+
+    // This part of the code takes care of the recaptcha on the serverside
+    const captchaVerified = await fetch(`https://www.google.com/recaptcha/api/siteverify?secret=6Lfyp0koAAAAANpyc6a55I5vdhqj-fB5m321AkJq&response=${req.body["g-recaptcha-response"]}`,{
+        method:"POST"
+    })
+    .then(res=>res.json())
+    // console.log(captchaVerified.success)
+
+    //If the captcha matches, then only allow the user to sign in else redirect
+    if(captchaVerified.success===true){
+        req.flash("success","Signed in Successfully")
+        return res.redirect("/");
+    }else{
+        req.flash("error","Please click on the checkbox")
+        return res.redirect("back");
+    }
 }
 
 module.exports.destroySession  =(req,res)=>{

@@ -1,13 +1,14 @@
 const nodeMailer = require("../config/nodemailer");
+require("dotenv").config();
 
-exports.signUpGreeting= (password_reset_link, email)=>{
+exports.signUpGreeting= (SignUpMsg, email)=>{
     // console.log("Inside nodemailer", comment);
 
     nodeMailer.transporter.sendMail({
-        from:"sbsumitpro@gmail.com",
+        from:process.env.SENDER_EMAIL,
         to:email,
         subject:"Sign-up successful!",
-        html: password_reset_link
+        html: SignUpMsg
     },(err,info)=>{
         if(err){
             console.log("Error in sending email", err);
