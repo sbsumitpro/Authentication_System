@@ -9,9 +9,15 @@ module.exports.signUp = (req, res)=>{
     })
 }
 
-module.exports.signIn = (Req,res)=>{
+module.exports.signIn = (req,res)=>{
     return res.render("sign-in",{
         title:"User Sign In"
+    })
+}
+
+module.exports.reset = (req,res)=>{
+    return res.render("reset",{
+        title:"Password Reset"
     })
 }
 
@@ -79,4 +85,34 @@ module.exports.destroySession  =(req,res)=>{
         // console.log("Logged out");
         return res.redirect("/");
     })
+}
+
+module.exports.updatePassword =async(req,res)=>{
+    try{
+        let user = await User.findById(req.query.id)
+        let isMatched = await bcrypt.compare(req.body.old_password, user.password)
+        if(isMatched){
+            if(req.body.new_password != req.body.confirm_new_password){
+                req.flash("error","New Password and confirm new password doesn't match!")
+                // console.log("New Password and confirm new password doesn't match!");
+                return res.redirect("back")
+            }
+            const salt = await bcrypt.genSalt(10);
+            const secPass = await bcrypt.hash(req.body.new_password,salt)
+            await User.findByIdAndUpdate(user._id,{password:secPass})
+            
+            req.flash("success","Password updated successfully!")
+            return res.redirect("/")
+        }else{
+            req.flash("error","Youe old password is not correct")
+            // console.log("You old passwor is not correct")
+            return res.redirect("back");
+        }
+        
+        return res.redirect("/");
+    }catch(err){
+        console.log("Error in Finding the user");
+        return res.redirect("back")
+    }
+
 }
